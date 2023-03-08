@@ -1,13 +1,14 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
+import Post from "../components/Post";
+import WallContent from "../components/WallContent";
+import ColumnContent from "../components/ColumnContent";
 
 const Wall = () => {
   return (
     <>
-      <div className="flex h-screen bg-gray-900">
-        <header></header>
-        <Sidebar />
-      </div>
+      <WallContent>
+        <ColumnContent></ColumnContent>
+      </WallContent>
     </>
   );
 };

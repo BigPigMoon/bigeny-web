@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useToken } from "../store";
 
-export const API_URL = "http://194.113.233.77:3000/";
+export const API_URL = "http://api.bigeny.ru";
 
 const $api = axios.create({
   withCredentials: true,
@@ -41,5 +41,7 @@ $api.interceptors.response.use(
     throw error;
   }
 );
+
+export const fetcher = (url: string) => $api.get(url).then((res) => res.data);
 
 export default $api;

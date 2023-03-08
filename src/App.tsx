@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Wall from "./pages/Wall";
@@ -9,15 +9,20 @@ import RouteGuard from "./utils/RouteGuard";
 import { useToken } from "./store";
 import axios from "axios";
 import { API_URL } from "./http";
-import { AuthType } from "./types/AuthResponse";
+import { AuthType } from "./types/AuthResponse.type";
+import Now from "./pages/Now";
+import Messanger from "./pages/Messanger";
+import Channels from "./pages/Channels";
+import NavBar from "./components/NavBar";
+import ChannelView from "./pages/ChannelView";
 
 function App() {
   useEffect(() => {
     const tokens = useToken.getState();
-    if (tokens) {
+    if (tokens.access.length > 0 && tokens.refresh.length > 0) {
       axios
         .post<AuthType>(
-          `${API_URL}auth/refresh`,
+          `${API_URL}/auth/refresh`,
           {},
           {
             withCredentials: true,
@@ -36,13 +41,28 @@ function App() {
     }
   }, []);
 
+  const location = useLocation();
+  const shouldRenderNavBar = [
+    "/",
+    "/new",
+    "/messanger",
+    "/messanger/channels",
+    "/channel/:id",
+  ].includes(location.pathname);
+
   return (
     <>
+      {shouldRenderNavBar && <NavBar />}
+
       <Routes>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route element={<RouteGuard />}>
           <Route element={<Wall />} path="/" />
+          <Route element={<Now />} path="/new" />
+          <Route element={<Messanger />} path="/messanger" />
+          <Route element={<Channels />} path="/messanger/channels" />
+          <Route element={<ChannelView />} path="/channel/:id" />
         </Route>
         <Route path="/*" element={<NotFound />} />
       </Routes>
