@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ColumnContent from "../components/ColumnContent";
 import WallContent from "../components/WallContent";
 import Post from "../components/Post";
 import useSWR from "swr";
 import { fetcher } from "../http";
-import { ChannelData, PostData } from "../types";
+import { PostData } from "../types";
 import getDate from "../helper/date";
+import Loading from "../components/Loading";
 
 const Now = () => {
   const { data, isLoading } = useSWR<PostData[]>("/posts", fetcher);
@@ -26,6 +27,7 @@ const Now = () => {
                 image={val.image}
               />
             ))}
+          {isLoading && <Loading />}
         </ColumnContent>
       </WallContent>
     </>

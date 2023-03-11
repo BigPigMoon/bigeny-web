@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import ColumnContent from "../components/ColumnContent";
 import WallContent from "../components/WallContent";
 import useSWR from "swr";

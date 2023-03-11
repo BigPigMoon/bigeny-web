@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import useSWR from "swr";
 import $api, { fetcher } from "../http";
-import Input from "./Input";
 import ColumnContent from "./ColumnContent";
 import SendInput from "./SendInput";
-import { MessageData, UserData } from "../types";
+import { MessageData } from "../types";
 import ChatBubble from "./ChatButtle";
 import parseJwt from "../utils/parseJWT";
 import { useToken } from "../store";
@@ -21,7 +20,7 @@ const DialogContent = ({ dialogId }: DialogContentProps) => {
     "/messages/" + dialogId,
     fetcher,
     {
-      refreshInterval: 500,
+      refreshInterval: 200,
     }
   );
 

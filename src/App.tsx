@@ -15,6 +15,7 @@ import Messanger from "./pages/Messanger";
 import Channels from "./pages/Channels";
 import NavBar from "./components/NavBar";
 import ChannelView from "./pages/ChannelView";
+import Profile from "./pages/Profile";
 
 function App() {
   useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route element={<RouteGuard />}>
           <Route element={<Wall />} path="/" />
+          <Route element={<Profile />} path="/profile" />
           <Route element={<Now />} path="/new" />
           <Route element={<Messanger />} path="/messanger" />
           <Route element={<Channels />} path="/messanger/channels" />

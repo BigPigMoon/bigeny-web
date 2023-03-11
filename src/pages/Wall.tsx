@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { PostData } from "../types";
 import { fetcher } from "../http";
 import getDate from "../helper/date";
+import Loading from "../components/Loading";
 
 const Wall = () => {
   const { data, isLoading } = useSWR<PostData[]>("/posts/subs", fetcher);
@@ -26,6 +27,7 @@ const Wall = () => {
                 image={val.image}
               />
             ))}
+          {isLoading && <Loading />}
         </ColumnContent>
       </WallContent>
     </>
