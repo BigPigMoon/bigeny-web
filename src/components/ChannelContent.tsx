@@ -6,22 +6,37 @@ import { PostData } from "../types";
 import parseJwt from "../utils/parseJWT";
 import { useToken } from "../store";
 import $api, { fetcher } from "../http";
+import SendInput from "./SendInput";
+import getDate from "../helper/date";
 
 type ChannelViewProps = {
+  avatar?: boolean;
   id: number;
   ownerId: number;
+  sub: boolean;
 };
 
-const ChannelContent = ({ id, ownerId }: ChannelViewProps) => {
+const ChannelContent = ({ sub, avatar, id, ownerId }: ChannelViewProps) => {
   const { data, mutate } = useSWR<PostData[]>(`/posts/channel/${id}`, fetcher, {
     refreshInterval: 1000,
   });
 
-  const [content, setContent] = useState("");
+  const [subscription, setSubscription] = useState(sub);
   const userSelfId: number = parseJwt(useToken.getState().access).sub;
 
-  const send = async () => {
-    await $api
+  const subscribe = () => {
+    $api.post("/channels/sub/" + id).then((res) => {
+      if (res.data) {
+        setSubscription(!subscription);
+      }
+    });
+  };
+
+  const send = (
+    content: string,
+    setContent: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    $api
       .post("/posts/create", {
         content: content,
         image: null,
@@ -48,36 +63,19 @@ const ChannelContent = ({ id, ownerId }: ChannelViewProps) => {
               channelId={val.channelId}
               key={val.id}
               content={val.content}
-              createdAt={new Date(Date.parse(val.createdAt))}
+              createdAt={getDate(val.createdAt)}
               image={val.image}
+              avatar={avatar}
             />
           ))}
       </ColumnContent>
-      <div className="flex items-end w-full p-4">
-        <input
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
-          value={content}
-          type="text"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") send();
-          }}
-          placeholder="Type here"
-          className="input w-full"
-        />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="w-6 h-6 m-4 cursor-pointer"
-          onClick={async () => {
-            await send();
-          }}
-        >
-          <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-        </svg>
-      </div>
+      {userSelfId === ownerId ? (
+        <SendInput send={send} />
+      ) : (
+        <button onClick={() => subscribe()} className="btn btn-accent m-4">
+          {subscription ? "unsubscribe" : "subscribe"}
+        </button>
+      )}
     </div>
   );
 };

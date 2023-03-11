@@ -4,10 +4,11 @@ import { useToken } from "../store";
 import ThemeSwitcher from "./ThemeSwitcher";
 import NavMenuItem from "./NavMenuItem";
 import useSWR from "swr";
+import { UserData } from "../types";
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const { data } = useSWR("/users/me", fetcher);
+  const { data } = useSWR<UserData>("/users/me", fetcher);
 
   const logout = () => {
     $api.post("/auth/logout").then((res) => {

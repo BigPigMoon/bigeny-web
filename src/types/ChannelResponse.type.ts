@@ -7,4 +7,5 @@ export type ChannelData = {
   ownerId: number;
   name: string;
   lastPost: PostData;
+  subscribe: boolean;
 };

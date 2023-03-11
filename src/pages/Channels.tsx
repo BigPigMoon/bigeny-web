@@ -12,8 +12,9 @@ import { ChannelData } from "../types";
 const Channels = () => {
   const [channelId, setChannelId] = useState<number | null>(null);
   const [ownerId, setOwnerId] = useState(0);
+  const [sub, setSub] = useState(false);
   const { data, isLoading, mutate } = useSWR<ChannelData[]>(
-    "channels",
+    "channels/subs",
     fetcher
   );
 
@@ -28,16 +29,21 @@ const Channels = () => {
                 onClick={(e) => {
                   setChannelId(val.id);
                   setOwnerId(val.ownerId);
+                  setSub(val.subscribe);
                 }}
                 key={val.id}
                 avatar={val.avatar}
                 name={val.name}
-                lastPost={null}
+                lastPost={
+                  channelId ? null : val.lastPost ? val.lastPost.content : ""
+                }
               />
             ))}
           {isLoading && <Loading />}
         </ColumnContent>
-        {channelId && <ChannelContent id={channelId} ownerId={ownerId} />}
+        {channelId && (
+          <ChannelContent id={channelId} ownerId={ownerId} sub={sub} />
+        )}
       </WallContent>
     </>
   );

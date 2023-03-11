@@ -26,7 +26,7 @@ const MiniDialog = ({ name, avatar, lastPost, onClick }: MiniDialogProps) => {
           ) : (
             <div className="avatar placeholder true-z">
               <div className="bg-neutral-focus text-neutral-content rounded-full w-20 h-20">
-                <span className="text-3xl">{name[0].toUpperCase()}</span>
+                <span className="text-5xl">{name[0].toUpperCase()}</span>
               </div>
             </div>
           )}
@@ -35,7 +35,6 @@ const MiniDialog = ({ name, avatar, lastPost, onClick }: MiniDialogProps) => {
           <h2 className="card-title text-ellipsis whitespace-nowrap overflow-hidden">
             {name}
           </h2>
-          <p>last post</p>
           <p>{lastPost}</p>
         </div>
       </div>

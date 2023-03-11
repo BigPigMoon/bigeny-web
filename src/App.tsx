@@ -42,13 +42,9 @@ function App() {
   }, []);
 
   const location = useLocation();
-  const shouldRenderNavBar = [
-    "/",
-    "/new",
-    "/messanger",
-    "/messanger/channels",
-    "/channel/:id",
-  ].includes(location.pathname);
+  const shouldRenderNavBar = !["/signup", "/signin"].includes(
+    location.pathname
+  );
 
   return (
     <>

@@ -10,7 +10,7 @@ type PostProps = {
   avatar?: boolean;
   channelId: number;
   image: string | null;
-  createdAt: Date;
+  createdAt: string;
   content: string;
 };
 
@@ -77,7 +77,7 @@ const Post = ({
                   ) : (
                     <div className="avatar placeholder true-z">
                       <div className="bg-neutral-focus text-neutral-content rounded-full w-20 h-20">
-                        <span className="text-3xl">
+                        <span className="text-5xl">
                           {channel?.name[0].toUpperCase()}
                         </span>
                       </div>
@@ -87,7 +87,7 @@ const Post = ({
               )}
               <div className="flex flex-col">
                 <h2 className="card-title">{channel.name}</h2>
-                <p>{createdAt.toLocaleDateString()}</p>
+                <p>{createdAt}</p>
               </div>
             </div>
           )}

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import WallContent from "../components/WallContent";
-import ColumnContent from "../components/ColumnContent";
 import ChannelContent from "../components/ChannelContent";
 import { fetcher } from "../http";
 import useSWR from "swr";
@@ -21,9 +20,12 @@ const ChannelView = () => {
     <>
       {data && (
         <WallContent>
-          <ColumnContent>
-            <ChannelContent id={data.id} ownerId={data.ownerId} />
-          </ColumnContent>
+          <ChannelContent
+            avatar={true}
+            id={data.id}
+            ownerId={data.ownerId}
+            sub={data.subscribe}
+          />
         </WallContent>
       )}
     </>

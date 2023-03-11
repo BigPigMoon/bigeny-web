@@ -5,6 +5,7 @@ import Post from "../components/Post";
 import useSWR from "swr";
 import { fetcher } from "../http";
 import { ChannelData, PostData } from "../types";
+import getDate from "../helper/date";
 
 const Now = () => {
   const { data, isLoading } = useSWR<PostData[]>("/posts", fetcher);
@@ -21,7 +22,7 @@ const Now = () => {
                 avatar={true}
                 channelId={val.channelId}
                 content={val.content}
-                createdAt={new Date(Date.parse(val.createdAt))}
+                createdAt={getDate(val.createdAt)}
                 image={val.image}
               />
             ))}

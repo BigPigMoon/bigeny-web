@@ -36,11 +36,6 @@ const CreateChannelModal = ({ mutate, data }: CreateChannelModalProps) => {
       });
     }
 
-    const channelData = new FormData();
-    channelData.append("name", name);
-    if (description) channelData.append("description", description);
-    if (description.length > 0) channelData.append("avatar", name);
-
     await $api
       .post("channels/create", {
         name: name,
