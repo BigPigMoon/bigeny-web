@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import $api, { API_URL, fetcher } from "../http";
-import { useToken } from "../store";
+import $api, { API_URL, fetcher } from "../../../http";
+import { useToken } from "../../../store";
 import ThemeSwitcher from "./ThemeSwitcher";
 import NavMenuItem from "./NavMenuItem";
 import useSWR from "swr";
-import { UserData } from "../types";
+import { UserData } from "../../../types";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center sticky z-50">
         <div className="navbar w-4/6 fixed navbar-center bg-base-200 rounded-xl shadow-md">
           <div className="navbar-start">
             <div className="dropdown">
@@ -116,7 +116,7 @@ const NavBar = () => {
               {data && data.avatar ? (
                 <div
                   tabIndex={0}
-                  className="btn btn-ghost btn-circle avatar true-z w-10 h-10"
+                  className="btn btn-ghost btn-circle avatar  w-10 h-10"
                 >
                   <div className="rounded-full">
                     <img
@@ -128,7 +128,7 @@ const NavBar = () => {
               ) : (
                 <div
                   tabIndex={0}
-                  className="btn btn-ghost btn-circle avatar placeholder true-z"
+                  className="btn btn-ghost btn-circle avatar placeholder "
                 >
                   <div className="bg-neutral-focus text-neutral-content rounded-full w-10 h-10">
                     <span className="text-3xl">

@@ -1,5 +1,5 @@
 import React from "react";
-import { DarkLightTheme, useTheme } from "../store";
+import { DarkLightTheme, useTheme } from "../../../store";
 
 const ThemeSwitcher = () => {
   const { theme, swithTheme } = useTheme();

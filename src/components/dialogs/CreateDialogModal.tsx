@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import $api, { API_URL, fetcher } from "../http";
+import $api, { API_URL, fetcher } from "../../http";
 import { KeyedMutator } from "swr";
-import { DialogData, UserData } from "../types";
+import { DialogData, UserData } from "../../types";
 import useSWR from "swr";
+import ErrorAlert from "../common/ErrorAlert";
+import FileInput from "../common/FileInput";
+import Input from "../common/Input";
 
 type CreateChannelModalProps = {
   mutate: KeyedMutator<DialogData[]>;
@@ -18,6 +21,10 @@ const CreateDialogModal = ({ mutate, data }: CreateChannelModalProps) => {
   >([]);
   const [disable, setDisable] = useState(true);
 
+  const [nameInUse, setNameInUse] = useState(false);
+  const [dialogNotUnique, setDialogNotUnique] = useState(false);
+  const [notCreated, setNotCreated] = useState(false);
+
   const { data: users } = useSWR<UserData[]>("users", fetcher);
 
   useEffect(() => {
@@ -28,6 +35,10 @@ const CreateDialogModal = ({ mutate, data }: CreateChannelModalProps) => {
 
   const createChannel = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    setNameInUse(false);
+    setDialogNotUnique(false);
+    setNotCreated(false);
 
     if (checkedUser.length > 1 && name.length === 0) {
       return;
@@ -53,18 +64,31 @@ const CreateDialogModal = ({ mutate, data }: CreateChannelModalProps) => {
       avatar: filename,
       users: checkedUser.map((v) => v.id),
     };
-    console.log(dataNewDialog);
+
     await $api
       .post("messages/createDialog", dataNewDialog)
       .then((res) => {
+        if (data) {
+          mutate([...data, res.data]);
+        }
+        setName("");
+        setCheckedUser([]);
+        setDisable(true);
         setChecked(false);
-        console.log(res.data);
-        // if (data) {
-        //   mutate([...data, res.data]);
-        // }
       })
       .catch((e) => {
-        console.log(e);
+        if (e.response) {
+          const message = e.response.data.message;
+          if (message === "Dialog name already in use") {
+            setNameInUse(true);
+          }
+          if (message === "Dialog already created") {
+            setDialogNotUnique(true);
+          }
+          if (message === "Dialog did not create") {
+            setNotCreated(true);
+          }
+        }
       });
   };
 
@@ -99,27 +123,25 @@ const CreateDialogModal = ({ mutate, data }: CreateChannelModalProps) => {
           </label>
           <div className="flex w-full">
             <div className="h-full card bg-base-300 rounded-box place-items-center p-4">
+              {nameInUse && (
+                <ErrorAlert message="The name of the dialog already in use!" />
+              )}
+              {dialogNotUnique && <ErrorAlert message="Dialog not unique!" />}
+              {notCreated && (
+                <ErrorAlert message="Dialog not created, try again!" />
+              )}
               <form onSubmit={(event) => createChannel(event)}>
                 <div className="form-control w-full max-w-xs mx-5">
-                  <span className="label label-text">Pick a avatar image</span>
-                  <input
+                  <FileInput name="Pick a avatar image" setFunc={setAvatar} />
+                  <Input
+                    name="Name of the dialog"
                     disabled={disable}
-                    type="file"
-                    onChange={(event) => {
-                      if (event.target.files) setAvatar(event.target.files[0]);
-                    }}
-                    className="file-input file-input-bordered w-full max-w-xs"
-                  />
-                  <span className="label label-text">Name of the dialog</span>
-                  <input
-                    disabled={disable}
+                    setVar={setName}
                     type="text"
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Name"
-                    className="input input-bordered w-full max-w-xs"
+                    placeholder="Dialog name"
+                    error={nameInUse}
                   />
                 </div>
-
                 <div className="modal-action">
                   <button type="submit" className="btn btn-accent">
                     Sumbit
@@ -172,7 +194,7 @@ const CreateDialogModal = ({ mutate, data }: CreateChannelModalProps) => {
                                 <div className="avatar">
                                   <div className="mask mask-squircle w-12 h-12">
                                     {user.avatar ? (
-                                      <div className="avatar true-z">
+                                      <div className="avatar ">
                                         <div className="rounded-full">
                                           <img
                                             src={`${API_URL}/store/download/${user.avatar}`}
@@ -181,7 +203,7 @@ const CreateDialogModal = ({ mutate, data }: CreateChannelModalProps) => {
                                         </div>
                                       </div>
                                     ) : (
-                                      <div className="avatar placeholder true-z">
+                                      <div className="avatar placeholder ">
                                         <div className="bg-neutral-focus text-neutral-content rounded-full w-12 h-12">
                                           <span className="text-3xl">
                                             {user.nickname[0].toUpperCase()}

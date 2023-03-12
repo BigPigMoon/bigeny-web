@@ -3,7 +3,9 @@ import React from "react";
 type InputProps = {
   type: string;
   name: string;
-  error: boolean;
+  error?: boolean;
+  placeholder?: string;
+  disabled?: boolean;
   setVar: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -11,12 +13,13 @@ const Input = (props: InputProps) => {
   return (
     <>
       <label className="label">
-        <span className="label-text">Your {props.name}</span>
+        <span className="label-text">{props.name}</span>
       </label>
       <input
         autoComplete={props.type === "password" ? "current-password" : "on"}
         type={props.type}
-        placeholder=""
+        disabled={props.disabled}
+        placeholder={props.placeholder}
         onChange={(e) => {
           props.setVar(e.target.value);
         }}

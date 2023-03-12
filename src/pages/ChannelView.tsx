@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import WallContent from "../components/WallContent";
-import ChannelContent from "../components/ChannelContent";
+import WallContent from "../components/common/WallContent";
+import ChannelContent from "../components/channels/ChannelContent";
 import { fetcher } from "../http";
 import useSWR from "swr";
 import { ChannelData } from "../types";

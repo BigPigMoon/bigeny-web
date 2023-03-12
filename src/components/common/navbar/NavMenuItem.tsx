@@ -16,7 +16,7 @@ const NavMenuItem = ({
   return (
     <>
       <li>
-        <Link to={to} className="justify-between z-50">
+        <Link to={to} className="justify-between z-10">
           <div className="flex flex-row grow items-center space-x-4">
             {children}
             <span className="text-center">{name}</span>

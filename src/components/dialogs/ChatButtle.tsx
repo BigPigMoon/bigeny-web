@@ -1,5 +1,5 @@
 import * as React from "react";
-import { API_URL } from "../http";
+import { API_URL } from "../../http";
 
 type ChatBubbleProps = {
   name: string;
@@ -18,17 +18,15 @@ const ChatBubble = ({
 }: ChatBubbleProps) => {
   return (
     <>
-      <div
-        className={`chat ${left ? "chat-start" : "chat-end"} m-0 p-0 true-z`}
-      >
+      <div className={`chat ${left ? "chat-start" : "chat-end"} m-0 p-0`}>
         {avatar ? (
-          <div className="chat-image avatar true-z w-10 h-10">
+          <div className="chat-image avatar  w-10 h-10">
             <div className="rounded-full">
               <img src={`${API_URL}/store/download/${avatar}`} alt="" />
             </div>
           </div>
         ) : (
-          <div className="chat-image avatar placeholder true-z">
+          <div className="chat-image avatar placeholder ">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-10 h-10">
               <span className="text-2xl">{name[0].toUpperCase()}</span>
             </div>

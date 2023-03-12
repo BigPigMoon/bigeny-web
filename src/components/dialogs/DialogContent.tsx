@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import useSWR from "swr";
-import $api, { fetcher } from "../http";
-import ColumnContent from "./ColumnContent";
-import SendInput from "./SendInput";
-import { MessageData } from "../types";
+import $api, { fetcher } from "../../http";
+import ColumnContent from "../common/ColumnContent";
+import SendInput from "../common/SendInput";
+import { MessageData } from "../../types";
 import ChatBubble from "./ChatButtle";
-import parseJwt from "../utils/parseJWT";
-import { useToken } from "../store";
-import getDate from "../helper/date";
+import parseJwt from "../../utils/parseJWT";
+import { useToken } from "../../store";
+import getDate from "../../helper/date";
 
 type DialogContentProps = {
   dialogId: number;
 };
 
 const DialogContent = ({ dialogId }: DialogContentProps) => {
-  const [content, setContent] = useState("");
-
   const { data, mutate } = useSWR<MessageData[]>(
     "/messages/" + dialogId,
     fetcher,

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import ColumnContent from "./ColumnContent";
-import Post from "./Post";
+import ColumnContent from "../common/ColumnContent";
+import Post from "../posts/Post";
 import useSWR from "swr";
-import { PostData } from "../types";
-import parseJwt from "../utils/parseJWT";
-import { useToken } from "../store";
-import $api, { fetcher } from "../http";
-import SendInput from "./SendInput";
-import getDate from "../helper/date";
+import { PostData } from "../../types";
+import parseJwt from "../../utils/parseJWT";
+import { useToken } from "../../store";
+import $api, { fetcher } from "../../http";
+import SendInput from "../common/SendInput";
+import getDate from "../../helper/date";
 
 type ChannelViewProps = {
   avatar?: boolean;

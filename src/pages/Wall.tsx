@@ -1,12 +1,12 @@
 import React from "react";
-import Post from "../components/Post";
-import WallContent from "../components/WallContent";
-import ColumnContent from "../components/ColumnContent";
+import Post from "../components/posts/Post";
+import WallContent from "../components/common/WallContent";
+import ColumnContent from "../components/common/ColumnContent";
 import useSWR from "swr";
 import { PostData } from "../types";
 import { fetcher } from "../http";
 import getDate from "../helper/date";
-import Loading from "../components/Loading";
+import Loading from "../components/common/Loading";
 
 const Wall = () => {
   const { data, isLoading } = useSWR<PostData[]>("/posts/subs", fetcher);

@@ -13,7 +13,7 @@ import { AuthType } from "./types/AuthResponse.type";
 import Now from "./pages/Now";
 import Messanger from "./pages/Messanger";
 import Channels from "./pages/Channels";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/common/navbar/NavBar";
 import ChannelView from "./pages/ChannelView";
 import Profile from "./pages/Profile";
 

@@ -1,8 +1,8 @@
 import React from "react";
 import useSWR from "swr";
-import { ChannelData, RateData } from "../types";
-import $api, { API_URL, fetcher } from "../http";
-import Loading from "./Loading";
+import { ChannelData, RateData } from "../../types";
+import $api, { API_URL, fetcher } from "../../http";
+import Loading from "../common/Loading";
 import { useNavigate } from "react-router-dom";
 
 type PostProps = {
@@ -54,7 +54,7 @@ const Post = ({
   return (
     <>
       {isLoading && <Loading />}
-      <div className="card true-z bg-base-100 shadow-xl">
+      <div className="card  bg-base-100 shadow-xl">
         <div className="card-body pb-0">
           {channel && (
             <div
@@ -66,7 +66,7 @@ const Post = ({
               {avatar && (
                 <figure className="flex self-center h-full">
                   {channel.avatar ? (
-                    <div className="avatar true-z w-20 h-20">
+                    <div className="avatar  w-20 h-20">
                       <div className="rounded-full">
                         <img
                           src={`${API_URL}/store/download/${channel.avatar}`}
@@ -75,7 +75,7 @@ const Post = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="avatar placeholder true-z">
+                    <div className="avatar placeholder ">
                       <div className="bg-neutral-focus text-neutral-content rounded-full w-20 h-20">
                         <span className="text-5xl">
                           {channel?.name[0].toUpperCase()}

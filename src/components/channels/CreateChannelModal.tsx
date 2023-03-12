@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import $api from "../http";
+import $api from "../../http";
 import { KeyedMutator } from "swr";
-import { ChannelData } from "../types";
+import { ChannelData } from "../../types";
+import ErrorAlert from "../common/ErrorAlert";
+import Input from "../common/Input";
+import FileInput from "../common/FileInput";
 
 type CreateChannelModalProps = {
   mutate: KeyedMutator<ChannelData[]>;
@@ -13,9 +16,11 @@ const CreateChannelModal = ({ mutate, data }: CreateChannelModalProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [checked, setChecked] = useState(false);
+  const [nameInUse, setNameInUse] = useState(false);
 
   const createChannel = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setNameInUse(false);
     // 👇 Create new FormData object and append files
     if (name.length === 0) {
       return;
@@ -49,7 +54,12 @@ const CreateChannelModal = ({ mutate, data }: CreateChannelModalProps) => {
         }
       })
       .catch((e) => {
-        console.log(e);
+        if (e.response) {
+          const message = e.response.data.message;
+          if (message === "The channel name already in use") {
+            setNameInUse(true);
+          }
+        }
       });
   };
 
@@ -85,29 +95,24 @@ const CreateChannelModal = ({ mutate, data }: CreateChannelModalProps) => {
 
           <form onSubmit={(event) => createChannel(event)}>
             <div className="form-control w-full max-w-xs mx-5">
-              <span className="label label-text">Pick a avatar image</span>
-              <input
-                type="file"
-                onChange={(event) => {
-                  if (event.target.files) setAvatar(event.target.files[0]);
-                }}
-                className="file-input file-input-bordered w-full max-w-xs"
+              {nameInUse && (
+                <ErrorAlert message="Channel name already in use!" />
+              )}
+              <FileInput
+                name="Set the avatar for channel"
+                setFunc={setAvatar}
               />
-              <span className="label label-text">Name of them channel</span>
-              <input
+              <Input
+                name="Name of the channel"
                 type="text"
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Type here"
-                className="input input-bordered w-full max-w-xs"
+                placeholder="Channel name"
+                setVar={setName}
               />
-              <span className="label label-text">
-                Description of the channel
-              </span>
-              <input
+              <Input
+                name="Description of the channel"
                 type="text"
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Type here"
-                className="input input-bordered w-full max-w-xs"
+                placeholder="Channel description"
+                setVar={setDescription}
               />
             </div>
             <div className="modal-action">

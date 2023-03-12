@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import MiniDialog from "../components/MiniDialog";
-import ColumnContent from "../components/ColumnContent";
+import MiniDialog from "../components/common/MiniDialog";
+import ColumnContent from "../components/common/ColumnContent";
 import { fetcher } from "../http";
-import CreateChannelModal from "../components/CreateChannelModal";
-import WallContent from "../components/WallContent";
+import CreateChannelModal from "../components/channels/CreateChannelModal";
+import WallContent from "../components/common/WallContent";
 import useSWR from "swr";
-import Loading from "../components/Loading";
-import ChannelContent from "../components/ChannelContent";
+import Loading from "../components/common/Loading";
+import ChannelContent from "../components/channels/ChannelContent";
 import { ChannelData } from "../types";
 
 const Channels = () => {

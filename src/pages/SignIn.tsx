@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Input from "../components/Input";
+import Input from "../components/common/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme, useToken } from "../store";
 import axios from "axios";
@@ -13,7 +13,7 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [userNotFound, setUserNotFound] = useState(false);
 
   const navigate = useNavigate();
 
@@ -30,7 +30,14 @@ const SignIn = () => {
         useToken.setState({ access: AccessToken, refresh: RefreshToken });
         navigate("/");
       })
-      .catch((e) => setError(true));
+      .catch((e) => {
+        if (e.response) {
+          const message = e.response.data.message;
+          if (message === "User not found") {
+            setUserNotFound(true);
+          }
+        }
+      });
   };
 
   return (
@@ -41,11 +48,36 @@ const SignIn = () => {
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="card-body">
+            {userNotFound && (
+              <div className="alert alert-error shadow-lg">
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="stroke-current flex-shrink-0 h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>Invalid password or email!</span>
+                </div>
+              </div>
+            )}
             <form className="form-control" onSubmit={submit}>
-              <Input name="Email" error={error} setVar={setEmail} type="text" />
               <Input
-                name="Password"
-                error={error}
+                name="Your Email"
+                error={userNotFound}
+                setVar={setEmail}
+                type="text"
+              />
+              <Input
+                name="Your Password"
+                error={userNotFound}
                 setVar={setPassword}
                 type="password"
               />
