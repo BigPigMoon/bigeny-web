@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useToken } from "../store";
 
-export const API_URL = "http://localhost:3333";
+export const API_URL = "http://bigeny-api:3333/";
 
 const $api = axios.create({
   withCredentials: true,
