@@ -2,15 +2,15 @@ FROM node:19
 
 WORKDIR /app
 
-COPY . /app
+COPY . .
 
-RUN yarn install
+RUN npm ci
 
-RUN yarn build
+RUN npm run build
 
 ENV NODE_ENV production
 ENV PORT 3000
 
 EXPOSE 3000
 
-CMD [ "npx", "serve", "-s", "build", "-p", "3000"]
+CMD [ "npx", "serve", "-s", "build" ]

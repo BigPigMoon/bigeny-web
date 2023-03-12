@@ -1,12 +1,10 @@
 version: '3' 
 services:
-  frontend-ft:
+  bigeny-web:
     build:
-      context: frontend
+      context: .
       dockerfile: Dockerfile
-    container_name: frontend-ft
+    container_name: bigeny-web
     restart: always
     ports:
       - 3000:3000
-    env_file:
-      - .env
